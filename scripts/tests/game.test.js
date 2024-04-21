@@ -21,4 +21,7 @@ describe('game object contain correct key', () => {
   it('should have choices key', () => {
     expect(game).toHaveProperty('choices')
   })
+  it('should have choices with correct ids', () => {
+    expect(game.choices).toEqual(['button1', 'button2', 'button3', 'button4'])
+  })
 })

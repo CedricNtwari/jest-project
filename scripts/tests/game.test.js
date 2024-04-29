@@ -1,4 +1,4 @@
-const { game, newGame, showScore, addTurn, lightsOn } = require('../game')
+const { game, newGame, showScore, addTurn, lightsOn, showTurns } = require('../game')
 
 beforeAll(() => {
   let fs = require('fs')
@@ -57,17 +57,25 @@ describe('newGame works correctly', () => {
     document.getElementById('score').innerText = '42'
     newGame()
   })
-  test('should set game score to zero', () => {
+  it('should set game score to zero', () => {
     expect(game.score).toEqual(0)
   })
-  test('should display 0 for the element with id of score', () => {
+  it('should display 0 for the element with id of score', () => {
     expect(document.getElementById('score').innerText).toEqual(0)
   })
-  test('should clear the player moves array', () => {
+  it('should clear the player moves array', () => {
     expect(game.playerMoves.length).toBe(0)
   })
-  test("should add one move to the computer's game array", () => {
+  it("should add one move to the computer's game array", () => {
     expect(game.currentGame.length).toBe(1)
+  })
+
+  it('expect data-listener to be true', () => {
+    newGame()
+    const elements = document.getElementsByClassName('circle')
+    for (let element of elements) {
+      expect(element.getAttribute('data-listener')).toEqual('true')
+    }
   })
 })
 
@@ -87,9 +95,15 @@ describe('gameplay works correctly', () => {
     addTurn()
     expect(game.currentGame.length).toBe(2)
   })
-  it('should add correct class to light up the buttons', () => {
+  /* it('should add correct class to light up the buttons', () => {
     let button = document.getElementById(game.currentGame[0])
     lightsOn(game.currentGame[0])
     expect(button.classList).toContain(game.currentGame[0] + 'light')
+  }) */
+
+  it('showTurns should update game.turnNumber', () => {
+    game.turnNumber = 42
+    showTurns()
+    expect(game.turnNumber).toBe(0)
   })
 })

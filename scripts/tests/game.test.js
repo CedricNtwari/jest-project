@@ -1,4 +1,4 @@
-const { game, newGame, showScore, addTurn, lightsOn, showTurns } = require('../game')
+const { game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn } = require('../game')
 
 beforeAll(() => {
   let fs = require('fs')
@@ -6,6 +6,14 @@ beforeAll(() => {
   document.open()
   document.write(fileContents)
   document.close()
+})
+
+describe('pre-game', () => {
+  it('clicking buttons before newGame should fail', () => {
+    game.lastButton = ''
+    document.getElementById('button2').click()
+    expect(game.lastButton).toEqual('')
+  })
 })
 
 describe('game object contain correct key', () => {
@@ -105,5 +113,17 @@ describe('gameplay works correctly', () => {
     game.turnNumber = 42
     showTurns()
     expect(game.turnNumber).toBe(0)
+  })
+
+  it('should increment the score if the turn is correct', () => {
+    game.playerMoves.push(game.currentGame[0])
+    playerTurn()
+    expect(game.score).toBe(1)
+  })
+  it('clicking during computer sequence should fail', () => {
+    showTurns()
+    game.lastButton = ''
+    document.getElementById('button2').click()
+    expect(game.lastButton).toEqual('')
   })
 })

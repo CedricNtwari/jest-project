@@ -50,8 +50,22 @@ function lightsOn(circ) {
   }, 400)
 }
 
+function playerTurn() {
+  let i = game.playerMoves.length - 1
+  if (game.currentGame[i] === game.playerMoves[i]) {
+    if (game.currentGame.length === game.playerMoves.length) {
+      game.score++
+      showScore()
+      addTurn()
+    }
+  } else {
+    alert('Wrong move!')
+    newGame()
+  }
+}
+
 function showScore() {
   document.getElementById('score').innerText = game.score
 }
 
-module.exports = { game, newGame, showScore, showTurns, addTurn, lightsOn }
+module.exports = { game, newGame, showScore, showTurns, addTurn, lightsOn, playerTurn }

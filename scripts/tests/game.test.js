@@ -1,4 +1,4 @@
-const { game, newGame, showScore } = require('../game')
+const { game, newGame, showScore, addTurn, lightsOn } = require('../game')
 
 beforeAll(() => {
   let fs = require('fs')
@@ -37,13 +37,59 @@ describe('newGame works correctly', () => {
   it('should set game score to zero', () => {
     expect(game.score).toEqual(0)
   })
+
+  it('should be one move in the computer"s game', () => {
+    expect(game.currentGame.length).toBe(1)
+  })
   it('should display 0 for the element with id of score', () => {
     expect(document.getElementById('score').innerText).toEqual(0)
   })
   it('should clear the player moves array', () => {
     expect(game.playerMoves.length).toBe(0)
   })
-  it('should clear the computer sequence array', () => {
-    expect(game.currentGame.length).toBe(0)
+})
+
+describe('newGame works correctly', () => {
+  beforeAll(() => {
+    game.score = 42
+    game.playerMoves = ['button1', 'button2']
+    game.currentGame = ['button1', 'button2']
+    document.getElementById('score').innerText = '42'
+    newGame()
+  })
+  test('should set game score to zero', () => {
+    expect(game.score).toEqual(0)
+  })
+  test('should display 0 for the element with id of score', () => {
+    expect(document.getElementById('score').innerText).toEqual(0)
+  })
+  test('should clear the player moves array', () => {
+    expect(game.playerMoves.length).toBe(0)
+  })
+  test("should add one move to the computer's game array", () => {
+    expect(game.currentGame.length).toBe(1)
+  })
+})
+
+describe('gameplay works correctly', () => {
+  beforeEach(() => {
+    game.score = 0
+    game.currentGame = []
+    game.playerMoves = []
+    addTurn()
+  })
+  afterEach(() => {
+    game.score = 0
+    game.currentGame = []
+    game.playerMoves = []
+  })
+  it('addTurn adds a new turn to the game', () => {
+    addTurn()
+    expect(game.currentGame.length).toBe(2)
+  })
+  it('should add correct class to light up the buttons', () => {
+    let button = document.getElementById(game.currentGame[0])
+    lightsOn(game.currentGame[0])
+    expect(button.classList).toContain(game.currentGame[0] + 'light')
   })
 })
